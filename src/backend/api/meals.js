@@ -1,150 +1,85 @@
+
 const express = require("express");
 const app = express();
 const router = express.Router();
-const pool = require("./../database");
 
-// Get all meals
-router.route("/")
-  .get((request, response) => {
-    const query = pool.query("SELECT * FROM meals", (error, results, fields) => {
-        if (error) {
-          response.status(404).json({
-            msg: "Check Query",
-            Query: query.sql
-          });
-        }
-        console.log("Query :", query.sql);
-        response.send(results);
-      }
-    );
-  })
-    // insert new meal
-  .post((request, response) => {
-    //  const meal = new meal(request.body)
-    const {title, description, location, meal_when, max_reservation, price,created_date } = request.body;
-    const meal = {
-      title: title,
-      description: description,
-      location: location,
-      meal_when: meal_when,
-      max_reservation: max_reservation,
-      price: price,
-      created_date: created_date
-    };
-    const query = pool.query("INSERT INTO meals SET ?", meal, (error, results, fields) => {
-        if (error) {
-          response.status(404).json({
-            msg: "There are error please check Query",
-            Query: query.sql
-          });
-        }
-        console.log("Query :", query.sql);
-        response.status(201).json(results);
-      }
-    );
-  })
+const db = require("./../database");
 
-  .get((request, response) => {
-    const maxPrice = Number(request.query.maxPrice);
-    const availableReservations = request.query.availableReservations;
-    const title = request.query.title;
-    const createdAfter = request.query.createdAfter;
-    const limit = Number(request.query.limit);
-
-    if (maxPrice) {
-      const query = pool.query(
-        "SELECT * FROM meals where price < ? ",
-        maxPrice,
-        function(error, results, fields) {
-          if (error) {
-            throw error;
-          }
-          response.json(results);
-        }
-      );
-    } else if (title) {
-      const query = pool.query(
-        "SELECT * FROM meals where title like ? ",
-        title,
-        function(error, results, fields) {
-          if (error) {
-            throw error;
-          }
-          response.json(results);
-        }
-      );
-    } else if (createdAfter) {
-      const query = pool.query(
-        "SELECT * FROM meals where created_date > ? ",
-        createdAfter,
-        function(error, results, fields) {
-          if (error) {
-            throw error;
-          }
-          response.json(results);
-        }
-      );
-    } else if (limit) {
-      const query = pool.query("SELECT * FROM meals limit ? ", limit, function(
-        error,
-        results,
-        fields
-      ) {
-        if (error) {
-          throw error;
-        }
-        response.json(results);
+router.get("/", (req, res) => {
+  const query = db.query("select * from meals", function(err, results) {
+    if (err) {
+      res.status(404).json({
+        msg: "Check Query",
+        Query: query.sql
       });
     }
+    console.log("Query :", query.sql);
+    res.send(results);
   });
+})
 
-   // Get one meal with id
-router.route("/:id")
-  .get((request, response) => {
-    const id = request.params.id;
-    const query = pool.query("SELECT * FROM meals where id = ?", id, (error, results, fields) => {
-        if (error) {
-          response.status(404).json({
-            msg: "Check Query",
-            Query: query.sql
-          });
-        }
-        console.log("Query :", query.sql);
-        response.json(results);
+router.get('/:id', (req,res) =>{
+  const{id} =req.params
+    db.query("select * from meals where id = ?",id, function(err, results) {
+      if (err) {
+          console.error(err);
+          throw new Error('Internal Error')
       }
-    );
+      res.json(results[0]);
+    });
   })
-  // update meals
-  .put((request, response) => {
-    const id = request.params.id;
-    const {title,description,location,meal_when,max_reservation,price,created_date} = request.body    
-    const query = pool.query("UPDATE meals SET ?  WHERE id = ? ", [{title,description,location,meal_when,max_reservation,price,created_date},id], (error, results, fields) => {
-        if (error) {
-          response.status(404).json({
-            msg: "Check Query",
-            Query: query.sql
-          });
-        }
-        console.log("Query :", query.sql);
-        response.status(201).send(` meal with id : ${id} Updated`);
+  
+router.post('/',(req,res)=> {
+  // const {title,description,location,meal_when,max_reservation,price,created_date} = req.body
+  //  or this:
+  const postData = req.body  
+  // if(!title || !description || !location || !meal_when || !max_reservation || !price || !created_date) throw new Error('Inconsistent data')
+    db.query("INSERT INTO meals SET ?", postData, function(err, results) {
+      if (err) {
+          console.error(err);
+          throw new Error('Internal Error')
       }
-    );
+      res.json(results);
+      // res.json({createdId : results.insertId});
+    });
   })
-
-
-  // Delete one meal with id
-  .delete((request, response) => {
-    const id = request.params.id;
-    const query = pool.query("DELETE FROM meals where id = ?", id, (error, results, fields) => {
-        if (error) {
-          response.status(404).json({
-            msg: "Check Query",
-            Query: query.sql
-          });
+  
+  router.put('/:id',(req,res)=> {
+    // const id =req.params
+    const {id,title,description,location,meal_when,max_reservation,price,created_date} = req.body    
+    // if(!title || !description || !location || !meal_when || !max_reservation || !price || !created_date) throw new Error('Inconsistent data')
+    db.query("UPDATE meals SET ? where id =? ",[{title,description,location,meal_when,max_reservation,price,created_date},id], function(err, results) {
+        if (err) {
+            console.error(err);
+            throw new Error('Internal Error')
         }
-        console.log("Query :", query.sql);
-        response.status(201).json(`meal with id : ${id} Removed`);
+        db.query("select * from meals where id = ?",id, function(err, results) {
+          if (err) {
+              console.error(err);
+              throw new Error('Internal Error')
+          }
+          res.json(results);
+        });
       });
-  });
+    })
+  
+router.delete('/:id', (req,res) =>{
+  const{id} =req.params
+    db.query("delete from meals where id = ?",id, function(err, results) {
+      if (err) {
+          console.error(err);
+          throw new Error('Internal Error')
+      }
+      // res.json({createdId : results.insertId});
+      // console.log(results);
+      // res.json(results);
+      if(results.affectedRows===1){
+        res.send({results: `Deleted object with id ${id}`})
+      } else {
+        res.send({results: 'Object not found'})
+      }
+    });
+  })
 
 module.exports = router;
+
