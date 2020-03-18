@@ -5,6 +5,7 @@ const router = express.Router();
 
 const db = require("./../database");
 
+//Get all meals
 router.get("/", (req, res) => {
   const query = db.query("select * from meals", function(err, results) {
     if (err) {
@@ -18,8 +19,10 @@ router.get("/", (req, res) => {
   });
 })
 
+//Get meal by id
 router.get('/:id', (req,res) =>{
   const{id} =req.params
+  console.log(id);
     db.query("select * from meals where id = ?",id, function(err, results) {
       if (err) {
           console.error(err);
@@ -29,11 +32,12 @@ router.get('/:id', (req,res) =>{
     });
   })
   
+  //insert meal
 router.post('/',(req,res)=> {
   // const {title,description,location,meal_when,max_reservation,price,created_date} = req.body
   //  or this:
   const postData = req.body  
-  // if(!title || !description || !location || !meal_when || !max_reservation || !price || !created_date) throw new Error('Inconsistent data')
+  console.log(postData)  // if(!title || !description || !location || !meal_when || !max_reservation || !price || !created_date) throw new Error('Inconsistent data')
     db.query("INSERT INTO meals SET ?", postData, function(err, results) {
       if (err) {
           console.error(err);
@@ -44,6 +48,7 @@ router.post('/',(req,res)=> {
     });
   })
   
+  //update meal by id
   router.put('/:id',(req,res)=> {
     // const id =req.params
     const {id,title,description,location,meal_when,max_reservation,price,created_date} = req.body    
@@ -63,6 +68,7 @@ router.post('/',(req,res)=> {
       });
     })
   
+    //delete meal by id
 router.delete('/:id', (req,res) =>{
   const{id} =req.params
     db.query("delete from meals where id = ?",id, function(err, results) {

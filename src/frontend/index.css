@@ -2,3 +2,176 @@
 * {
   font-family: 'Montserrat', sans-serif;
 }
+
+* {
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+#icon{
+  border: 3px solid rgb(197, 10, 10);
+  border-radius: 50%;
+  max-width: 80px;
+  float: left;
+    position: relative;
+
+}
+#text-header{
+  background-color: rgb(245, 125, 46);
+
+}
+body {
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+/*   background-image: url("https://www.mealsharing.com/assets/v2/home/slide_1.jpg"); */
+
+}
+
+.container{
+
+  background-color: rgb(255, 168, 127);
+}
+
+#container{
+  display:flex;
+  justify-content: space-around;
+  background-color: rgb(255, 168, 127);
+  
+}
+
+#meal-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+
+  }
+
+#all-meals{
+  border: 1px solid red;
+font-size: 25PX;
+  height: 50px;
+display: inline-block;
+  margin: 25px;
+  background-color: rgb(254, 255, 255);
+  color: rgb(8, 8, 8);
+  border-radius: 15px;
+  height: 300px;
+  width: 300px;
+}
+#li-meal{
+  display: block;
+  align-content: center;
+}
+#meal-info{
+  text-align: center;
+  border: 3px solid rgb(28, 236, 63);
+  border-radius: 15px;
+font-size: 15PX;
+height: 550px;
+width: 600px;
+}
+
+#navigation_menu {
+  display : flex;
+  justify-content: space-around;
+  background-color:rgb(176, 230, 126);  
+  list-style-type: none;
+font-size: 20px;
+  margin:5px;
+  padding: 10px;
+}
+
+#searchBtn, #createBtn  {
+  background: red;
+  height: 30px;
+  width: 55px;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+h2, h1{
+  margin: 5px;
+}  
+
+
+#meal_list {  
+  padding: 6px;
+  margin: 4px;
+     
+  width: 600px;  
+  border: 1px solid rgb(235, 230, 230);
+  border-radius: 5px;
+
+}
+#updateInfo{
+  float: right;
+  margin-right: 30px;
+}
+
+#deleteBtn{
+  float: right;
+  border: 1px solid rgb(235, 230, 230);
+  border-radius: 5px;
+  background: red;
+  width: 60px;
+  cursor: pointer;
+}
+
+#allMealList{
+  border: 2px solid rgb(235, 230, 230);
+  border-radius: 15px;
+  margin: 20px;
+}
+ 
+
+ 
+#new_meal{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(197, 62, 62);
+  width: 200px;
+  padding: 15px;
+  border-radius: 15px;
+ 
+}
+
+footer{
+  padding-top: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
+  display: inline-flex;  
+  width: 100%;
+  justify-content: space-evenly;
+ 
+} 
+
+#order-form{
+  margin: 20px;
+  padding-bottom: 10px;
+  align-items: center;
+}
+
+#img-meal{
+  border: 1px solid rgb(146, 24, 24);
+  }
+
+#review-form{
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 
+#meals_menu {
+  background-image: url("https://www.pcma.org/wp-content/uploads/2019/05/Sharing-Plates.jpg");
+  height: 600px;
+  width: 100%;
+} */
+
+
+
