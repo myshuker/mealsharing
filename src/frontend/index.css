@@ -166,3 +166,15 @@ footer{
   flex-direction: column;
 }
 
+
+
+ul {
+  list-style-type: none;
+ }
+
+@media only screen and (max-width: 600px) {
+  footer {
+     flex-direction: column;
+  }
+
+}
