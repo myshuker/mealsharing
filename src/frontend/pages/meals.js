@@ -1,5 +1,8 @@
 // Delete meal
-const deleteMeal = (id) => {
+
+// Note: I don't want to activate delete meal to avoid anyone delete files from heroku
+/* 
+const deleteMeal = (id) => {  
   console.log('deleteMeal', id);
   fetch (`/api/meals/${id}`, {
     method: 'DELETE' 
@@ -8,7 +11,7 @@ const deleteMeal = (id) => {
   .then (results => {
     console.log(results);
   })
-}
+} */
 
 // add new meal 
 const insertMeal = () => {
@@ -75,7 +78,7 @@ window.handleMealsRequest = () => {
             <div>
                 <li  id="meal_list">                    
                   ${meal.title} for ${meal.price} DKK              
-                  <button id="deleteBtn" onClick="deleteMeal(${meal.id})"> Delete </button>
+                   <button id="deleteBtn" onClick="deleteMeal(${meal.id})"> Delete </button> 
                 <a id="updateInfo" href ='meal/${meal.id}'> Update info </a> 
 
                 </li>
